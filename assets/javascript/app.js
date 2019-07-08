@@ -1,4 +1,6 @@
+// begins loading the function when document finishes loading
 
+$(document).ready(function(){
 
 // begin by creating an array to hold the objects that hold the questions and answer data
 
@@ -30,7 +32,7 @@ var questionArray = [
             },
             correct: "a"
         },
-        { question: "What video game holds the record time for longest development?",
+        { question: "What video game holds the record time for longest time in development?",
             answers: {
                 a: "Diablo 3",
                 b: "Duke Nukem Forever",
@@ -98,5 +100,42 @@ var questionArray = [
 console.log(questionArray)
 console.log(questionArray[5].answers)
 
+var questionContainer = document.getElementById('question');
+var answersContainer = document.getElementById('answers');
+var resultContainer = document.getElementById('result');
 
+function startGame(){
+    $("#directions").addClass('none');
+    $("#start").addClass('none');
 
+    var output = [];
+
+    questionArray.forEach(
+        (currentQuestion, questionNumber) => {
+
+            var answers = [];
+
+            for(letter in currentQuestion.answers){
+
+                answers.push(
+                    `<label>
+                    <input type="radio" name="question${questionNumber}" value="${letter}">
+                    ${letter} :
+                    ${currentQuestion.answers[letter]}
+                    </label>`
+                );
+            }
+
+            output.push(
+                `<div class="question"> ${currentQuestion.question} </div>
+                <div class="answers"> ${answers.join('')} </div>`
+            )
+    }
+  );
+
+  questionContainer.innerHTML = output.join('');
+}
+
+$("#start").click(startGame);
+
+});
