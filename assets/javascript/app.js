@@ -36,7 +36,7 @@ var questions = [
            ["Diablo 3", "Duke Nukem Forever", "The Last Guardian", "Final Fantasy XV"],
            "Duke Nukem Forever"),
 
-        new question("What is currently the fastest selling video game console?",
+        new Question("What is currently the fastest selling video game console?",
             ["Playstation 2", "Nintendo 3DS", "Xbox 360", "Nintendo Switch"], "Nintendo Switch"),
 
         new Question("How many characters appeared as playable units in Capcom's original Project X Zone?",
@@ -115,5 +115,36 @@ function guess(id, guess) {
         startGame();   
     }
 }
+
+// function to determine which question you are currently on and update as you go
+
+function showProgress() {
+    var currentQuestionNum = quiz.questionIndex + 1;
+    var element = document.getElementById("progress");
+    element.innerHTML = "Question " + currentQuestionNum + " of " + quiz.questions.length;
+}
+
+// display the results 
+
+function showScore() {
+    $("#quiz").html("<h1>Results</h1>" +"<br>"+ "<h2 id='score'> Your Score : " 
+    + quiz.score + " out of " + quiz.questions.length + "</h2>" +"<br>"+ "<button id='tryagain'>Try Again</button>");
+    $("#tryagain").click(function(){
+    location.reload();
+    })
+} 
+
+
+
+var quiz = new Quiz(questions)
+
+$("#start").click(function(){
+    startGame();
+    $(".buttons").attr("class", "display")
+    $("#start").addClass("none")
+    $("#directions").addClass("none")
+});
+
+
 
 });

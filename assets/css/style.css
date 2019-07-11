@@ -1,13 +1,60 @@
 .none { display: none; }
 
-.display { display: block; }
+.display { display: block;
+            padding: 5px 5px;
+            text-align: center;
+}
 
 .buttons { display: none;
-            margin-top: 30px;
+           
 }
 
 #btn0, #btn1, #btn2, #btn3 {
-    width: 250px;
+    min-width: 260px;
+    width: auto;
+    font-size: 16px;
+    height:auto;
+    min-height: 50px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+}
+
+#start {
+    padding-top: 40px;
+}
+
+#start button {
+        width: 100px;
+        height: 50px;
+        font-size: 20px;
+        font-weight: bolder;
+}
+
+#quiz {
+    text-align: center;
+    width: 600px;
+    height: 300px;
+    border-radius: 50px;
+    border: 2px solid black;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+#progress, #question {
+    font-weight: bold;
+}
+
+p { max-width: 400px;
+    word-wrap: wrap;
+    text-align: center;
+    margin-left: 100px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+#tryagain {
+    width: 150px;
+    height: 50px;
     font-size: 20px;
-    padding: 10px 10px;
+    font-weight: bold;
 }
