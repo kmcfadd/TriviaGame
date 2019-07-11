@@ -27,16 +27,16 @@ var questions = [
         new Question("In what year did the original Atari 2600 console launch?",
             ["1980","1977","1976","1981"],"1977"),
 
-        new Question("What video game holds the lowest Metacritic score?",
+        new Question("What video game currently has the lowest Metacritic score?",
              ["Family Party: Obstacle Arcade", "Ride to Hell: Retribution",
              "Leisure Suit Larry: Box Office Bust","Vroom in the Night Sky"],
              "Family Party: Obstacle Arcade"),
 
-        new Question("What video game holds the record time for longest time in development?",
+        new Question("What video game currently holds the record time for longest time in development?",
            ["Diablo 3", "Duke Nukem Forever", "The Last Guardian", "Final Fantasy XV"],
            "Duke Nukem Forever"),
 
-        new Question("What is currently the fastest selling video game console?",
+        new Question("What is the fastest selling video game console?",
             ["Playstation 2", "Nintendo 3DS", "Xbox 360", "Nintendo Switch"], "Nintendo Switch"),
 
         new Question("How many characters appeared as playable units in Capcom's original Project X Zone?",
@@ -100,11 +100,11 @@ function startGame() {
             var element = document.getElementById("choice" + i);
             element.innerHTML = choices[i];
             guess("btn" + i, choices[i]);
-        } 
+     } 
             // displays what question you are on
             showProgress();
     }
-}
+} 
 
 // function to tie the choices to their respective button id and process the button click
 
@@ -124,7 +124,7 @@ function showProgress() {
     element.innerHTML = "Question " + currentQuestionNum + " of " + quiz.questions.length;
 }
 
-// display the results 
+// display the results and allow you to redo the game
 
 function showScore() {
     $("#quiz").html("<h1>Results</h1>" +"<br>"+ "<h2 id='score'> Your Score : " 
@@ -134,9 +134,9 @@ function showScore() {
     })
 } 
 
-
-
 var quiz = new Quiz(questions)
+
+
 
 $("#start").click(function(){
     startGame();
