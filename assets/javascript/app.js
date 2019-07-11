@@ -2,7 +2,7 @@
 
 $(document).ready(function(){
 
-// write a constructor function to define the objects for the questions
+// write a constructor function to define the parameters for the questions
 
 function Question(text, choices, answer) {
     this.text = text;
@@ -55,7 +55,65 @@ var questions = [
             ["Minecraft", "Wii SPorts", "Tetris", "Grand Theft Auto V"], "Tetris")
     ];
 
+// constructor for game logic parameters
 
+function Quiz(questions) {
+    this.score = 0;
+    this.questions = questions;
+    this.questionIndex = 0;
+}
 
+// using the index of the array to show each question
+
+Quiz.prototype.getQuestionIndex = function() {
+    return this.questions[this.questionIndex];
+}
+
+// showing the logic relation for determining when to add a point, and move to the next question
+
+Quiz.prototype.guess = function(answer) {
+    if(this.getQuestionIndex().isCorrect(answer)){
+        this.score++;
+    } this.questionIndex++;
+}
+
+// determining that the game is over when the question array reaches its end
+
+Quiz.prototype.isEnded = function() {
+    return this.questionIndex === this.questions.length;
+}
+
+/* function to begin the game, show results when over, and fill the question
+ and answers with their respective elements from the array for each  */
+
+function startGame() {
+    if(quiz.isEnded()){
+        showScore();
+    } else {
+        // displays the question
+        var element = document.getElementById("question");
+        element.innerHTML = quiz.getQuestionIndex().text;
+
+        // displays the choices
+        var choices = quiz.getQuestionIndex().choices;
+        for(var i = 0; i < choices.length; i++) {
+            var element = document.getElementById("choice" + i);
+            element.innerHTML = choices[i];
+            guess("btn" + i, choices[i]);
+        } 
+            // displays what question you are on
+            showProgress();
+    }
+}
+
+// function to tie the choices to their respective button id and process the button click
+
+function guess(id, guess) {
+    var button = document.getElementById(id);
+    button.onclick = function() {
+        quiz.guess(guess);
+        startGame();   
+    }
+}
 
 });
