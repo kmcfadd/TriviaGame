@@ -75,6 +75,7 @@ Quiz.prototype.guess = function(answer) {
     if(this.getQuestionIndex().isCorrect(answer)){
         this.score++;
         $("#count").text("Correct")
+        
     } else { $("#count").text("Incorrect")}
     
     this.questionIndex++;
@@ -89,14 +90,14 @@ Quiz.prototype.isEnded = function() {
 /* function to begin the game, show results when over, and fill the question
  and answers with their respective elements from the array for each  */
 
+var timer = 30;
+
 function startGame() {
     if(quiz.isEnded()){
         showScore();
     } else {
 
-        var timer = 30;
         $("#count").text(timer + " seconds remaining")
-
 
 
         // displays the question
@@ -121,7 +122,14 @@ function guess(id, guess) {
     var button = document.getElementById(id);
     button.onclick = function() {
         quiz.guess(guess);
-        setInterval(startGame, 3000)
+
+        function toggle() {
+            $("#btn0, #btn1, #btn2, #btn3").toggle("none")
+
+        }
+        toggle();
+        setTimeout(toggle, 3000)
+        setTimeout(startGame, 3000)
         
       
     }
