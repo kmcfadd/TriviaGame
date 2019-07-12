@@ -74,7 +74,10 @@ Quiz.prototype.getQuestionIndex = function() {
 Quiz.prototype.guess = function(answer) {
     if(this.getQuestionIndex().isCorrect(answer)){
         this.score++;
-    } this.questionIndex++;
+        $("#count").text("Correct")
+    } else { $("#count").text("Incorrect")}
+    
+    this.questionIndex++;
 }
 
 // determining that the game is over when the question array reaches its end
@@ -90,6 +93,12 @@ function startGame() {
     if(quiz.isEnded()){
         showScore();
     } else {
+
+        var timer = 30;
+        $("#count").text(timer + " seconds remaining")
+
+
+
         // displays the question
         var element = document.getElementById("question");
         element.innerHTML = quiz.getQuestionIndex().text;
@@ -112,7 +121,9 @@ function guess(id, guess) {
     var button = document.getElementById(id);
     button.onclick = function() {
         quiz.guess(guess);
-        startGame();   
+        setInterval(startGame, 3000)
+        
+      
     }
 }
 
