@@ -1,9 +1,7 @@
 // begins loading the function when document finishes loading
-
 $(document).ready(function(){
 
-// write a constructor function to define the parameters for the questions
-
+// write a constructor function to define the parameters for the questions array
 function Question(text, choices, answer) {
     this.text = text;
     this.choices = choices;
@@ -11,15 +9,17 @@ function Question(text, choices, answer) {
 }
 
 // defining the condition from the parent constructor to which an answer is correct
-
 Question.prototype.isCorrect = function(choice) {
     return this.answer === choice;
+}
+
+Question.prototype.isWrong = function(choice) {
+    return this.answer != choice;
 }
 
 
 /*  create an array with the objects that hold the questions and answer data
 in reference to the constructor function */
-
 var questions = [
         new Question("How many numbered Final Fantasy games have been released to this date?",
             ["13","14","15","16"],"15"),
@@ -52,53 +52,79 @@ var questions = [
             ["Wolfenstein", "Call of Duty", "Medal of Honor", "Sniper Elite"], "Wolfenstein"),
 
         new Question("What is the best selling video game of all time?",
-            ["Minecraft", "Wii SPorts", "Tetris", "Grand Theft Auto V"], "Tetris")
+            ["Minecraft", "Wii Sports", "Tetris", "Grand Theft Auto V"], "Tetris")
     ];
 
 // constructor for game logic parameters
-
 function Quiz(questions) {
     this.score = 0;
+    this.unanswered = 0;
+    this.wrong = 0;
     this.questions = questions;
     this.questionIndex = 0;
 }
 
 // using the index of the array to show each question
-
 Quiz.prototype.getQuestionIndex = function() {
     return this.questions[this.questionIndex];
 }
 
-// showing the logic relation for determining when to add a point, and move to the next question
-
+/* showing the logic relation for determining when to add a point, 
+and move to the next question */
 Quiz.prototype.guess = function(answer) {
     if(this.getQuestionIndex().isCorrect(answer)){
         this.score++;
         $("#count").text("Correct")
         
-    } else { $("#count").text("Incorrect")}
+    } else if (timer === 0) {
+        this.unanswered++
+        $("#count").text("Unanswered")
+    }
+    
+    else {
+        this.wrong++ 
+        $("#count").text("Incorrect")}
     
     this.questionIndex++;
 }
 
 // determining that the game is over when the question array reaches its end
-
 Quiz.prototype.isEnded = function() {
     return this.questionIndex === this.questions.length;
 }
 
+
+/* variables and functions used for the timer that counts down and 
+advances every question if no answer is given */
+var timer = 20;
+var interval;
+
+function quizTimer() {
+    interval = setInterval(decrement, 1000)
+}
+
+function decrement() {
+    timer--;
+    $("#count").text(timer + " seconds remaining")
+    // lowers the timer automatically and triggers an incorrect response upon 0
+    if (timer === 0) {
+        quiz.guess();
+        clearInterval(interval)
+        toggle();
+        setTimeout(toggle, 3000)
+        setTimeout(startGame, 3000)
+    }
+}
+
 /* function to begin the game, show results when over, and fill the question
  and answers with their respective elements from the array for each  */
-
-var timer = 30;
-
 function startGame() {
     if(quiz.isEnded()){
         showScore();
     } else {
-
-        $("#count").text(timer + " seconds remaining")
-
+        // starts a timer at 20 seconds and counts down
+        timer = 20;
+        quizTimer();
 
         // displays the question
         var element = document.getElementById("question");
@@ -111,32 +137,29 @@ function startGame() {
             element.innerHTML = choices[i];
             guess("btn" + i, choices[i]);
      } 
-            // displays what question you are on
+            // displays what question you are on ( x out of y)
             showProgress();
     }
 } 
 
-// function to tie the choices to their respective button id and process the button click
-
+// function to handle turning the choices off and on in between questions
+ function toggle() {
+            $("#btn0, #btn1, #btn2, #btn3").toggle("none")
+        }
+/* function to tie the choices to their respective button id 
+and process the button click */
 function guess(id, guess) {
     var button = document.getElementById(id);
     button.onclick = function() {
         quiz.guess(guess);
-
-        function toggle() {
-            $("#btn0, #btn1, #btn2, #btn3").toggle("none")
-
-        }
+        clearInterval(interval)
         toggle();
         setTimeout(toggle, 3000)
         setTimeout(startGame, 3000)
-        
-      
     }
 }
 
 // function to determine which question you are currently on and update as you go
-
 function showProgress() {
     var currentQuestionNum = quiz.questionIndex + 1;
     var element = document.getElementById("progress");
@@ -144,26 +167,24 @@ function showProgress() {
 }
 
 // display the results and allow you to redo the game
-
 function showScore() {
-    $("#quiz").html("<h1>Results</h1>" +"<br>"+ "<h2 id='score'> Your Score : " 
-    + quiz.score + " out of " + quiz.questions.length + "</h2>" +"<br>"+ "<button id='tryagain'>Try Again</button>");
+    $("#quiz").html("<h1>Results</h1>" 
+    + "<h2>" + quiz.score + " Correct"  +"<br>"
+    + quiz.wrong + " Wrong" + "<br>"
+    + quiz.unanswered + " Unanswered" + "</h2>" +"<br>"
+    + "<button id='tryagain'>Try Again</button>");
     $("#tryagain").click(function(){
-    location.reload();
+        location.reload();
     })
 } 
 
 var quiz = new Quiz(questions)
 
-
-
+// on click function to begin the game and hide the initial text and button
 $("#start").click(function(){
     startGame();
     $(".buttons").attr("class", "display")
     $("#start").addClass("none")
     $("#directions").addClass("none")
 });
-
-
-
 });
